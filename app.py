@@ -90,6 +90,8 @@ def newmember(fname,lname,email):
     except mysql.connector.Error as e:
         print(e)
 
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
