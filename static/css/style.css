@@ -349,6 +349,13 @@ input[type=checkbox]:not(old):checked + label > span:before {
   z-index: 2;
   color: #555; }
 
+.success-message {
+    color: green;
+}
+.error-message {
+    color: red;
+}
+
 @media screen and (max-width: 768px) {
   .container {
     width: calc(100% - 40px);

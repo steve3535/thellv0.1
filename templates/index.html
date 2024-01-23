@@ -24,14 +24,14 @@
                         <h2 class="form-title">thelinuxlabs.com</h2>
                         <h3 class="form-title">Créer un compte</h3>
                         <div class="form-group">
-                            <input type="text" class="form-input" name="lastname" id="lastname" placeholder="Nom" required />
-                        </div>
-                        <div class="form-group">
                             <input type="text" class="form-input" name="firstname" id="firstname" placeholder="Prénom" required />
                         </div>
                         <div class="form-group">
+                            <input type="text" class="form-input" name="lastname" id="lastname" placeholder="Nom" required />
+                        </div>                        
+                        <div class="form-group">
                             <input type="email" class="form-input" name="email" id="email" placeholder="Email" required />
-                        </div>                                                                                             
+                        </div>                                                                                          
                         
                         
                         <div class="form-group">
@@ -43,7 +43,9 @@
                         </div>
                     </form>
                     
-                    
+                    {% if message %}
+                    <p class="{{ 'success-message' if 'Merci' in message else 'error-message' }}">{{ message }}</p>
+                    {% endif %}
                     
                 </div>
             </div>
