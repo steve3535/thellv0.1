@@ -1,0 +1,6 @@
+* une adresse email malformée va conduire a une erreur de creation IPA (invisible a capturer au frontend - et result.stdout vide au backend)
+* les exceptions de subprocess ne semblent pas etre gerees par Python
+* il nya pas que lemail qui doit etre unique dans la base, car au niveau IPA, il faut lunicité du username egalement, mais erreur silencieuse si lutilisateur IPA existe deja
+* ATTN ! DURANT LENROLLEMENT DUNE MACHINE APPARTENANT AU REALM , LA RESOLUTION TELEPORT.THELINUXLABS.COM VA ECHOUER CAR notres DNS  ets SOA en local pour ce domaine
+  * jai donc mis dans /etc/hosts 
+  

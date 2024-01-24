@@ -64,7 +64,7 @@ def user_exists(email):
 
 
 def create_ipa_user(username,fname,lname,email):
-    cmd = ['ssh','-p','2222',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email]
+    cmd = ['ssh','-p','2222',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email,f'--homedir="/home/{username}"','--shell="/bin/bash"']
     
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
