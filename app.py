@@ -84,8 +84,10 @@ def create_teleport_user(username):
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
         print('Teleport user created successfully')
-        #print(result.stdout.split('\n'))
-        print(f'Lien de connexion {result.stdout.split("\n")[1]} valide pour 24h.')
+        link=result.stdout.split('\n')[1]
+        print(link)
+        print("-->"+str(link))
+        print(f'Lien de connexion {link} valide pour 24h.')
         
         return result.stdout.split("\n")[1]
     except Exception as e:
