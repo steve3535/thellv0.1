@@ -26,7 +26,7 @@ db_name = 'signup_db'
 
 
 def usergen(x,y):
-    return x.lower()[1]+y
+    return x.lower()[0]+y
 
 def sendmsg(rcpt,fname):
     try:       
