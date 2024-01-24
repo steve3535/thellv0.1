@@ -85,9 +85,9 @@ def create_teleport_user(username):
         result = subprocess.run(cmd,text=True,capture_output=True)
         print('Teleport user created successfully')
         #print(result.stdout.split('\n'))
-        print(f'Lien de connexion {result.stdout[1]} valide pour 24h.')
+        print(f'Lien de connexion {result.stdout.split("\n")[1]} valide pour 24h.')
         
-        return result.stdout[1]
+        return result.stdout.split("\n")[1]
     except Exception as e:
         print(e)
         return "" 
@@ -110,9 +110,7 @@ def newmember(fname,lname,email):
         return False 
     else:
         sendmsg(email,fname,link)
-        
-
-
+    
     try:
         conn = mysql.connector.connect(
            host = db_host,
