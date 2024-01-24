@@ -82,6 +82,7 @@ def create_teleport_user(username):
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
         print('Teleport user created successfully')
+        print(result.stdout)
         return True
     except Exception as e:
         print(e) 
