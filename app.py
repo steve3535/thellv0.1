@@ -65,13 +65,14 @@ def user_exists(email):
 
 def create_ipa_user(username,fname,lname,email):
     cmd = ['ssh','-p','2222',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email]
+    print(cmd)
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
         if result.returncode == 0:
             print(username+' created successfully on IPA')
             return True 
     except Exception as e:
-        print(e)
+        print('error -->',e)
         return False  
 
      # cmd_output=subprocess.run(['ssh',f'ubuntu@{PUBLIC_IP}','sudo','useradd','-m',email,'-s','/bin/bash'],text=True,capture_output=True)
