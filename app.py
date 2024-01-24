@@ -28,10 +28,10 @@ db_name = 'signup_db'
 def usergen(x,y):
     return x.lower()[0]+y
 
-def sendmsg(rcpt,fname):
+def sendmsg(rcpt,fname,msg):
     try:       
        msg = Message("Inscription thelinuxlabs", recipients=[rcpt])
-       msg.body = f"Cher {fname},\nMerci pour votre inscription.\n"
+       msg.body = f"Cher {fname},\nMerci pour votre inscription.\nConnectez vous à la plateforme en utilisant le lien {msg} valable 24h.\n"
        mail.send(msg)
     except Exception as e:
        print(e)
@@ -84,10 +84,13 @@ def create_teleport_user(username):
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
         print('Teleport user created successfully')
-        print(result.stdout.split('\n'))
-        return True
+        #print(result.stdout.split('\n'))
+        print(f'Lien de connexion {result.stdout[1]} valide pour 24h.')
+        
+        return result.stdout[1]
     except Exception as e:
-        print(e) 
+        print(e)
+        return "" 
 
 def newmember(fname,lname,email):
     if user_exists(email):
@@ -101,9 +104,13 @@ def newmember(fname,lname,email):
         print('unable to create ipa user')
         return False 
 
-    if not(create_teleport_user(username)):
+    link=create_teleport_user(username)
+    if len(link)==0:
         print('unable to create teleport user')
         return False 
+    else:
+        sendmsg(email,fname,link)
+        
 
 
     try:
