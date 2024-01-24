@@ -65,7 +65,7 @@ def user_exists(email):
 
 def create_ipa_user(username,fname,lname,email):
     cmd = ['ssh','-p','2222',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email]
-    print(cmd)
+    
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
         if result.returncode == 0:
@@ -79,11 +79,11 @@ def create_ipa_user(username,fname,lname,email):
 
 
 def create_teleport_user(username):
-    cmd = ['sudo','tctl','users','add',f'{username}','--logins',f'{username}','--roles=access']
+    cmd = ['sudo','tctl','users','add',f'{username}','--logins',f'{username}','--roles=access','--ttl=24h']
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
         print('Teleport user created successfully')
-        print(result.stdout)
+        print(result.stdout.split('\n'))
         return True
     except Exception as e:
         print(e) 
