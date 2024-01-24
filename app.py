@@ -68,6 +68,7 @@ def create_ipa_user(username,fname,lname,email):
     
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
+        print(result.stdout) 
         if result.returncode == 0:
             print(username+' created successfully on IPA')
             return True 
