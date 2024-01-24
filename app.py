@@ -1,6 +1,10 @@
 from flask import Flask, request, url_for, redirect, render_template
 from flask_mail import Message, Mail
-import mysql.connector 
+import mysql.connector,subprocess  
+
+cluster=[{'name':'popos','ip':'94.252.50.124','admin_user':'steve'}]
+CLUSTER0_ADMIN_USER="steve"
+
 
 app = Flask(__name__)
 app.secret_key = '123456'
@@ -18,6 +22,7 @@ db_port = 3307
 db_user = 'admin'
 db_password = 'admin'
 db_name = 'signup_db'
+
 
 
 def usergen(x,y):
@@ -58,10 +63,46 @@ def user_exists(email):
         print(e)
 
 
+def create_ipa_user(username,fname,lname,email):
+    cmd = ['ssh','-p','2222',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email]
+    try:
+        result = subprocess.run(cmd,text=True,capture_output=True)
+        if result.returncode == 0:
+            print(username+' created successfully on IPA')
+            return True 
+    except Exception as e:
+        print(e)
+        return False  
+
+     # cmd_output=subprocess.run(['ssh',f'ubuntu@{PUBLIC_IP}','sudo','useradd','-m',email,'-s','/bin/bash'],text=True,capture_output=True)
+
+
+def create_teleport_user(username):
+    cmd = ['sudo','tctl','users','add',f'{username}','--logins',f'{username}','--roles=access']
+    try:
+        result = subprocess.run(cmd,text=True,capture_output=True)
+        print('Teleport user created successfully')
+        return True
+    except Exception as e:
+        print(e) 
+
 def newmember(fname,lname,email):
     if user_exists(email):
         return False 
     
+    #gen username
+    username = usergen(fname.lower(),lname.lower())
+
+    
+    if not(create_ipa_user(username,fname,lname,email)):
+        print('unable to create ipa user')
+        return False 
+
+    if not(create_teleport_user(username)):
+        print('unable to create teleport user')
+        return False 
+
+
     try:
         conn = mysql.connector.connect(
            host = db_host,
@@ -103,14 +144,12 @@ def register():
     lastname = request.form['lastname']
     firstname = request.form['firstname']
 
-    #gen username
-    username = usergen(firstname.lower(),lastname.lower())
-
+    
     #new member 
     if newmember(firstname,lastname,email):
         message = "Merci pour votre inscription ! Veuillez vérifier votre email"
     else:
-        message = "Oups! un utilisateur avec la meme adresse email existe déjà"
+        message = "Oups! une erreur a empêché la création de votre compte - contactez steve@thelinuxlabs.com"
     
     #return redirect(url_for('index'))
     return render_template('index.html',message=message)
