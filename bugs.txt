@@ -4,3 +4,7 @@
 * ATTN ! DURANT LENROLLEMENT DUNE MACHINE APPARTENANT AU REALM , LA RESOLUTION TELEPORT.THELINUXLABS.COM VA ECHOUER CAR notres DNS  ets SOA en local pour ce domaine
   * jai donc mis dans /etc/hosts 
 * !!! il faut un ticket kerberos (sous root car on utilise sudo)avant que la commande en ligne ipa user-add ne marche !!!  
+  * penser mettre ne place un cron ! 
+* lorske le dynamic ip au nivo de la fritzbox change, on est en pls, mais pire: on a aucune info de ce qui se passe, meme pas de message sur le frontend !!
+  * je suis passé en dyndns nativement avec noip sur la fritzbox
+  * manque notoire de logs !!! 
