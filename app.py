@@ -1,8 +1,9 @@
 from flask import Flask, request, url_for, redirect, render_template
 from flask_mail import Message, Mail
 import mysql.connector,subprocess  
+import socket 
 
-cluster=[{'name':'popos','ip':'94.252.50.124','admin_user':'steve'}]
+cluster=[{'name':'popos','ip':'','admin_user':'steve'}]
 CLUSTER0_ADMIN_USER="steve"
 
 
@@ -23,7 +24,8 @@ db_user = 'admin'
 db_password = 'admin'
 db_name = 'signup_db'
 
-
+def get_current_ip(hostname):
+    return socket.gethostbyname(hostname)
 
 def usergen(x,y):
     return x.lower()[0]+y
@@ -64,6 +66,8 @@ def user_exists(email):
 
 
 def create_ipa_user(username,fname,lname,email):
+    cluster[0]['ip']=get_current_ip("kwakousteve.ddns.net")
+    print(cluster[0]['ip'])
     cmd = ['ssh','-p','2222',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email,f'--homedir="/home/{username}"','--shell="/bin/bash"']
     
     try:
