@@ -68,7 +68,7 @@ def user_exists(email):
 def create_ipa_user(username,fname,lname,email):
     cluster[0]['ip']=get_current_ip("kwakousteve.ddns.net")
     #print(cluster[0]['ip'])
-    cmd = ['ssh','-p','2222',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email,f'--homedir="/home/{username}"','--shell="/bin/bash"']
+    cmd = ['ssh','-p','2222','-o','StrictHostKeyChecking=no',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email,f'--homedir="/home/{username}"','--shell="/bin/bash"']
     #print(cmd)
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
