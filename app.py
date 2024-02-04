@@ -2,6 +2,7 @@ from flask import Flask, request, url_for, redirect, render_template
 from flask_mail import Message, Mail
 import mysql.connector,subprocess  
 import socket 
+import os 
 
 cluster=[{'name':'popos','ip':'','admin_user':'steve'}]
 CLUSTER0_ADMIN_USER="steve"
@@ -14,7 +15,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'steve@thelinuxlabs.com'
-app.config['MAIL_PASSWORD'] = 'ongz ukyw lezw zimx'
+app.config['MAIL_PASSWORD'] =  os.environ('MAIL_PASSWORD')   #'ongz ukyw lezw zimx'
 app.config['MAIL_DEFAULT_SENDER'] = 'steve@thelinuxlabs.com'
 mail = Mail(app)
 
