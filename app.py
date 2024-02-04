@@ -15,7 +15,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'steve@thelinuxlabs.com'
-app.config['MAIL_PASSWORD'] =  os.environ('MAIL_PASSWORD')   #'ongz ukyw lezw zimx'
+app.config['MAIL_PASSWORD'] =  os.environ['MAIL_PASSWORD']   #'ongz ukyw lezw zimx'
 app.config['MAIL_DEFAULT_SENDER'] = 'steve@thelinuxlabs.com'
 mail = Mail(app)
 
