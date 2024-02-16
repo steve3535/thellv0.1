@@ -70,7 +70,7 @@ def create_ipa_user(username,fname,lname,email):
     cluster[0]['ip']=get_current_ip("kwakousteve.ddns.net")
     #print(cluster[0]['ip'])
     cmd = ['ssh','-p','2222','-o','StrictHostKeyChecking=no',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','idm','sudo','ipa','user-add',f'{username}','--first',fname,'--last',lname,'--email',email,f'--homedir="/home/{username}"','--shell="/bin/bash"']
-    #print(cmd)
+    cmd2 = ['ssh','-p','2222','-o','StrictHostKeyChecking=no',f'{cluster[0]["admin_user"]}@{cluster[0]["ip"]}','ssh','workstation','sudo','/root/create_homedirs.sh',f'{username}']
     try:
         result = subprocess.run(cmd,text=True,capture_output=True)
         print(result.stdout) 
@@ -80,6 +80,16 @@ def create_ipa_user(username,fname,lname,email):
     except Exception as e:
         print('error -->',e)
         return False  
+    
+    try:
+        result = subprocess.run(cmd2,text=True,capture_output=True)
+        print(result.stdout) 
+        if result.returncode == 0:
+            print(username+' home directory created successfully')
+            return True
+    except Exception as e:
+        print('error -->',e)
+        return False
 
      # cmd_output=subprocess.run(['ssh',f'ubuntu@{PUBLIC_IP}','sudo','useradd','-m',email,'-s','/bin/bash'],text=True,capture_output=True)
 
