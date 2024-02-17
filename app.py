@@ -76,23 +76,19 @@ def create_ipa_user(username,fname,lname,email):
         print(result.stdout) 
         if result.returncode == 0:
             print(username+' created successfully on IPA')
+
+            result = subprocess.run(cmd2,text=True,capture_output=True)
+            print(result.stdout) 
+            if result.returncode == 0:
+                print(username+' home directory created successfully')                              
+            
             return True 
     except Exception as e:
         print('error -->',e)
         return False  
+       
+         
     
-    try:
-        result = subprocess.run(cmd2,text=True,capture_output=True)
-        print(result.stdout) 
-        if result.returncode == 0:
-            print(username+' home directory created successfully')
-            return True
-    except Exception as e:
-        print('error -->',e)
-        return False
-
-     # cmd_output=subprocess.run(['ssh',f'ubuntu@{PUBLIC_IP}','sudo','useradd','-m',email,'-s','/bin/bash'],text=True,capture_output=True)
-
 
 def create_teleport_user(username):
     cmd = ['sudo','tctl','users','add',f'{username}','--logins',f'{username}','--roles=access','--ttl=24h']
