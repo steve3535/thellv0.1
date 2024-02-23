@@ -89,6 +89,17 @@ def create_ipa_user(username,fname,lname,email):
        
          
     
+def create_gitrepo(username):
+    cmd = ['ssh','-p','2222','-o','StrictHostKeyChecking=no',f'{CLUSTER0_ADMIN_USER}@{get_current_ip("kwakousteve.ddns.net")}','ssh','workstation','./create_gitrepo.sh',f'{username}']
+    try:
+        result = subprocess.run(cmd,text=True,capture_output=True)
+        print(result.stdout) 
+        if result.returncode == 0:
+            print(username+' git repository created successfully')
+            return True 
+    except Exception as e:
+        print('error -->',e)
+        return False
 
 def create_teleport_user(username):
     cmd = ['sudo','tctl','users','add',f'{username}','--logins',f'{username}','--roles=access','--ttl=24h']
@@ -124,6 +135,9 @@ def newmember(fname,lname,email):
     else:
         sendmsg(email,fname,link)
     
+    if not(create_gitrepo(username)):
+        print('unable to create git repository')
+        
     try:
         conn = mysql.connector.connect(
            host = db_host,
